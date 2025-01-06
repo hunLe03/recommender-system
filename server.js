@@ -7,15 +7,16 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'views', 'assets')));
+// Serve static files from the 'public/assets' folder
+app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+
+// Serve static files from the root folder for index.html
 app.use(express.static(path.join(__dirname)));
 
-
+// Render the index.html for the root route
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -52,7 +53,6 @@ app.post("/movie_recc", function (req, res) {
 app.listen(port, () => {
   console.log(`Server is started Successfully on ${port}`);
 });
-
 
 // Error handling middleware
 app.use(function (err, req, res, next) {
