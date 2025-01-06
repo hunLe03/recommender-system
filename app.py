@@ -117,8 +117,8 @@ def recommender(movie_name, data, model, n_recommendations, df, movie_users):
 if len(sys.argv) > 1:
     name = sys.argv[1]
 else:
-    print("No movie name provided. Using default for testing.")
-    name = "Toy Story"  # Default movie name for testing
+    name = "BatMan"  # Default movie name for testing
+    print("No movie name provided, using: {}".format(name))
 
 
 # Call the recommender function

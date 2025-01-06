@@ -7,9 +7,15 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static(path.join(__dirname, 'views', 'assets')));
+app.use(express.static(path.join(__dirname)));
+
+
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
+
+
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -46,6 +52,7 @@ app.post("/movie_recc", function (req, res) {
 app.listen(port, () => {
   console.log(`Server is started Successfully on ${port}`);
 });
+
 
 // Error handling middleware
 app.use(function (err, req, res, next) {
