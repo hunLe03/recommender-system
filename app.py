@@ -123,8 +123,3 @@ else:
 
 # Call the recommender function
 recommender(name, matrix_movies_users, knn, 5, df, movie_users)
-
-
-# print(df.head())  # Should show movie and rating data
-# print(movies.head())  # Should show movie and rating data
-# print(df.columns)  # Should list all column names

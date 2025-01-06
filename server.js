@@ -7,6 +7,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use('/assets', express.static(path.join(__dirname, 'views/assets')));
 app.use(express.static(path.join(__dirname, 'views', 'assets')));
 app.use(express.static(path.join(__dirname)));
 
