@@ -1,0 +1,13 @@
+{
+  "name": "recommender-system",
+  "version": "1.0.0",
+  "description": "This movie recommendation system is a python-based recommendation system that works on KNN algorithm.\r KNN or K-nearest neighbor algorithm is a supervised machine learning algorithm.\r K-NN algorithm stores all the available data and classifies a new data point based on the similarity.\r So, we used this approach in our project to get five nearest data points to the one that the user will enter as per the requirements.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

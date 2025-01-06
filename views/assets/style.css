@@ -1,0 +1,18 @@
+body { 
+    background-color: #252522; 
+    color: white; 
+  } 
+ 
+  img { 
+    height: 7rem; 
+    width: 5rem ; 
+  }
+ 
+  p{
+   margin:3px;
+ }
+ 
+ table { 
+   border-spacing: 10px;
+   border-collapse: separate;
+ }
