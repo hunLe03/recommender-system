@@ -1,65 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recommendations</title>
-    style
-        include /assets/css/style.css
-  </head>
-  <body>
-    <h1>Movie Recommendations</h1>
-    <hr>
-    <table>
-      <h3>#{param.movie_searched}</h3>
-      <!-- movie 1 details -->
-      <tr valign=top>
-        <td><img class="img1" src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image" /></td>
-        <td>
-          <p class="mov1"><strong>!{param.movie1}</strong></p>
-          <p class="cast1"></p>
-        </td>
-      </tr>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Recommendations
+    //- Include the CSS file
+    link(rel="stylesheet" href="/assets/style.css")
+  
+  body
+    h1 Movie Recommendations
+    hr
+    h3 #{param.movie_searched}
+    table
+      // Movie 1 details
+      tr(valign="top")
+        td
+          img.img1(src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image")
+        td
+          p.mov1
+            strong !{param.movie1}
+          p.cast1
 
-      <!-- movie 2 details -->
-      <tr valign=top>
-        <td><img class="img2" src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image" /></td>
-        <td>
-          <p class="mov2"><strong>!{param.movie2}</strong></p>
-          <p class="cast2"></p>
-        </td>
-      </tr>
+      // Movie 2 details
+      tr(valign="top")
+        td
+          img.img2(src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image")
+        td
+          p.mov2
+            strong !{param.movie2}
+          p.cast2
 
-      <!-- movie 3 details -->
-      <tr valign=top>
-        <td><img class="img3" src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image" /></td>
-        <td>
-          <p class="mov3"><strong>!{param.movie3}</strong></p>
-          <p class="cast3"></p>
-        </td>
-      </tr>
+      // Movie 3 details
+      tr(valign="top")
+        td
+          img.img3(src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image")
+        td
+          p.mov3
+            strong !{param.movie3}
+          p.cast3
 
-      <!-- movie 4 details -->
-      <tr valign=top>
-        <td><img class="img4" src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image" /></td>
-        <td>
-          <p class="mov4"><strong>!{param.movie4}</strong></p>
-          <p class="cast4"></p>
-        </td>
-      </tr>
+      // Movie 4 details
+      tr(valign="top")
+        td
+          img.img4(src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image")
+        td
+          p.mov4
+            strong !{param.movie4}
+          p.cast4
 
-      <!-- movie 5 details -->
+      // Movie 5 details
+      tr(valign="top")
+        td
+          img.img5(src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image")
+        td
+          p.mov5
+            strong !{param.movie5}
+          p.cast5
 
-      <tr valign=top>
-        <td><img class="img5" src="https://www.svgrepo.com/show/7849/loading.svg" alt="Image" /></td>
-        <td>
-          <p class="mov5"><strong>!{param.movie5}</strong></p>
-          <p class="cast5"></p>
-        </td>
-      </tr>
-    </table>
-    script
-        include ./assets/js/custom.js
-  </body>
-</html>
+    //- Include the custom JS file
+    script(src="/assets/custom.js")
