@@ -35,7 +35,7 @@ let data_mov = [];
 // Function to load and parse the CSV files
 function loadCSV() {
   // Parse movies.csv
-  Papa.parse('/movies.csv', {
+  Papa.parse('movies.csv', {
     download: true,
     header: true,
     dynamicTyping: true,
@@ -60,7 +60,7 @@ function loadCSV() {
   });
 
   // Parse ratings.csv if needed
-  Papa.parse('/ratings.csv', {
+  Papa.parse('ratings.csv', {
     download: true,
     header: true,
     dynamicTyping: true,
