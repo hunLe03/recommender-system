@@ -2,3 +2,4 @@ node_modules/
 test.py
 test.pug
 test_custom.js
+.vercel
