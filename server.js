@@ -7,15 +7,10 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-<<<<<<< HEAD
 // Serve static files from the 'public/assets' folder
 app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
 
 // Serve static files from the root folder for index.html
-=======
-app.use('/assets', express.static(path.join(__dirname, 'views/assets')));
-app.use(express.static(path.join(__dirname, 'views', 'assets')));
->>>>>>> 770d94a8622002d170640722d0ecd00f7bc249fe
 app.use(express.static(path.join(__dirname)));
 
 // Render the index.html for the root route

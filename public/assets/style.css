@@ -1,18 +1,21 @@
-body { 
-    background-color: #252522; 
-    color: white; 
-  } 
- 
-  img { 
-    height: 7rem; 
-    width: 5rem ; 
-  }
- 
-  p{
-   margin:3px;
- }
- 
- table { 
-   border-spacing: 10px;
-   border-collapse: separate;
- }
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: #252522;
+  color: white;
+}
+
+img {
+  height: 7rem;
+  width: 5rem;
+}
+
+p {
+  margin: 3px;
+}
+
+table {
+  border-spacing: 10px;
+  border-collapse: separate;
+}

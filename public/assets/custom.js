@@ -3,44 +3,60 @@ const script = document.createElement('script');
 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js';
 document.head.appendChild(script);
 
-// New API details for movie types (movies-and-tv-shows-api.p.rapidapi.com)
-const options = {
+// API configuration
+const moviesApiOptions = {
   method: 'POST',
   headers: {
     'x-rapidapi-key': '3fc82de1bbmsh08a8176d826f4edp1ba8cbjsn485b6890060a',
     'x-rapidapi-host': 'movies-and-tv-shows-api.p.rapidapi.com',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ tmdbId: '141' }) // Body should be a JSON string
 };
 
-// Data to be accessed and rendered (initially empty, will be populated by CSV)
+const imdbOptions = {
+  method: 'GET',
+  headers: {
+    'x-rapidapi-key': '3fc82de1bbmsh08a8176d826f4edp1ba8cbjsn485b6890060a',
+    'x-rapidapi-host': 'imdb236.p.rapidapi.com',
+  },
+};
+
+const movieInfoOptions = {
+  method: 'GET',
+  headers: {
+    'x-rapidapi-key': '3fc82de1bbmsh08a8176d826f4edp1ba8cbjsn485b6890060a',
+    'x-rapidapi-host': 'movie-info-api.p.rapidapi.com',
+  },
+};
+
+// Data to be accessed and rendered
 let data_mov = [];
 
 // Function to load and parse the CSV files
 function loadCSV() {
-  // Parse movies.csv (assuming it's served from the server or URL)
+  // Parse movies.csv
   Papa.parse('movies.csv', {
     download: true,
     header: true,
     dynamicTyping: true,
-    complete: function(results) {
-      console.log("Movies CSV data loaded", results);
-      // Process the CSV results and fill `data_mov`
+    complete: function (results) {
+      console.log('Movies CSV data loaded', results);
+
       results.data.forEach((row, index) => {
-        if (index < 5) { // Limit to first 5 movies for now
+        if (index < 5 && row.movie_name) { // Limit to first 5 movies and check for valid data
           data_mov.push({
-            movie_name: row.movie_name, // Adjust column name based on your CSV structure
+            movie_name: row.movie_name.trim(),
             image: document.querySelector(`.img${index + 1}`),
-            cast: document.querySelector(`.cast${index + 1}`)
+            cast: document.querySelector(`.cast${index + 1}`),
           });
         }
       });
-      // Fetch data for each movie after CSV is loaded
-      data_mov.forEach(element => {
-        getData(element);
+
+      // Fetch data for each movie
+      data_mov.forEach((movie) => {
+        getData(movie);
       });
-    }
+    },
   });
 
   // Parse ratings.csv if needed
@@ -48,10 +64,9 @@ function loadCSV() {
     download: true,
     header: true,
     dynamicTyping: true,
-    complete: function(results) {
-      console.log("Ratings CSV data loaded", results);
-      // Process and use ratings if necessary
-    }
+    complete: function (results) {
+      console.log('Ratings CSV data loaded', results);
+    },
   });
 }
 
@@ -59,55 +74,87 @@ function loadCSV() {
 async function getData(movie) {
   console.log('Fetching data for movie:', movie.movie_name);
 
+  if (!movie.image || !movie.cast) {
+    console.error('Missing UI elements for movie:', movie.movie_name);
+    return;
+  }
+
   const url = `https://movies-and-tv-shows-api.p.rapidapi.com/movies?search=${encodeURIComponent(movie.movie_name)}`;
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, moviesApiOptions);
     const result = await response.json();
-    console.log('API Response:', result);
+    console.log('Movies API Response:', result);
 
     if (result && result.Search && result.Search.length > 0) {
       const movieData = result.Search[0];
 
-      // Set the movie poster or a fallback image if the poster is missing
-      const posterUrl = movieData.Poster || 'https://via.placeholder.com/150'; // Default placeholder if no poster is available
-      movie.image.setAttribute("src", posterUrl);
+      // Set movie poster
+      const posterUrl = movieData.Poster || 'https://via.placeholder.com/150';
+      movie.image.setAttribute('src', posterUrl);
 
-      // Update cast information or show fallback text
-      movie.cast.innerHTML = "Cast: " + (movieData.Actors || 'No information available');
+      // Set cast info
+      movie.cast.innerHTML = `Cast: ${movieData.Actors || 'No information available'}`;
 
-      // Fetch detailed movie information using the IMDb ID
+      // Fetch detailed movie info
       await getDetailedMovieInfo(movieData.imdbID, movie);
+
+      // Fetch additional movie info
+      await getMovieInfo(movie.movie_name, movie);
     } else {
-      console.error("No data found for movie:", movie.movie_name);
-      movie.cast.innerHTML = "No information available";
+      console.error('No data found for movie:', movie.movie_name);
+      movie.cast.innerHTML = 'No information available';
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
-    movie.cast.innerHTML = "Error fetching data";
+    console.error('Error fetching movie data:', error);
+    movie.cast.innerHTML = 'Error fetching data';
   }
 }
 
-// Fetch detailed movie information using IMDb ID and update UI
+// Fetch detailed movie information using IMDb ID
 async function getDetailedMovieInfo(imdbID, movie) {
   const url = `https://imdb236.p.rapidapi.com/imdb/tt${imdbID}`;
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, imdbOptions);
     const result = await response.json();
-    console.log('Detailed Movie Info:', result);
+    console.log('IMDb API Response:', result);
 
-    // Example: If the result contains specific details, display them
     if (result && result.title) {
-      movie.cast.innerHTML += "<br>Title: " + result.title;
+      movie.cast.innerHTML += `<br>Title: ${result.title}`;
     }
-    // You can add more details to display from the result here (e.g., genres, release date, etc.)
   } catch (error) {
     console.error('Error fetching detailed movie info:', error);
   }
 }
 
-// Load the CSV data when the page is loaded
-window.onload = function() {
+// Fetch additional movie information using movie-info-api
+async function getMovieInfo(movieTitle, movie) {
+  const url = `https://movie-info-api.p.rapidapi.com/movie-info?title=${encodeURIComponent(movieTitle)}&lang=en-US&max_results=10`;
+
+  try {
+    const response = await fetch(url, movieInfoOptions);
+    const result = await response.json();
+    console.log('Movie Info API Response:', result);
+
+    if (result && result.length > 0) {
+      const additionalInfo = result[0];
+      const director = additionalInfo.director || 'N/A';
+      const genres = additionalInfo.genres?.join(', ') || 'N/A';
+      const rating = additionalInfo.rating || 'N/A';
+
+      movie.cast.innerHTML += `<br>Director: ${director}`;
+      movie.cast.innerHTML += `<br>Genres: ${genres}`;
+      movie.cast.innerHTML += `<br>Rating: ${rating}`;
+    } else {
+      console.error('No additional info found for movie:', movieTitle);
+    }
+  } catch (error) {
+    console.error('Error fetching additional movie info:', error);
+  }
+}
+
+// Load CSV data on page load
+window.onload = function () {
   loadCSV();
 };
